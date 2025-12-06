@@ -1,0 +1,31 @@
+# Rust
+target/
+Cargo.lock
+**/*.rs.bk
+*.pdb
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+*.profraw
+*.profdata
+
+# Documentation
+target/doc/
+
+# Environment
+.env
+.env.local
+
+# Project documentation (for understanding only)
+CHANGELOG.md
+PROJECT_SUMMARY.md
