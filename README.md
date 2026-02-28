@@ -13,10 +13,10 @@ Organizations face an urgent challenge: migrate to post-quantum cryptography bef
 ## Key Features
 
 - **Hybrid Cryptography**: Support both classical and post-quantum algorithms simultaneously
-- **📋 Policy-Driven**: Define cryptographic policies centrally and enforce them across your system
+- **Policy-Driven**: Define cryptographic policies centrally and enforce them across your system
 - **Gradual Migration**: Roll out PQC gradually with percentage-based traffic splitting
-- **🔒 Security-First**: Built in Rust for memory safety and security guarantees
-- **📊 Algorithm Abstraction**: Unified interface for classical and post-quantum algorithms
+- **Security-First**: Built in Rust for memory safety and security guarantees
+- **Algorithm Abstraction**: Unified interface for classical and post-quantum algorithms
 - **Validation**: Automatic validation against security policies
 
 ## Project Status
@@ -73,8 +73,6 @@ cargo build --release --features cli
 # Verify signature  
 ./target/release/cryptoshift verify --key mykey.pub --input "Hello!" --signature sig.bin
 ```
-
-See [CLI.md](CLI.md) for complete CLI documentation.
 
 ### Running Examples
 
@@ -136,15 +134,15 @@ cryptoshift/
 ## Supported Algorithms
 
 ### Classical Algorithms
-- Ed25519 ✅
-- X25519 ✅
-- RSA (2048, 3072, 4096) ✅
-- ECDSA (P-256, P-384) ✅
+- Ed25519
+- X25519
+- RSA (2048, 3072, 4096)
+- ECDSA (P-256, P-384)
 
 ### Post-Quantum Algorithms (NIST Selected)
-- Dilithium (2, 3, 5) ✅
-- Kyber (512, 768, 1024) 🔜
-- FALCON (512, 1024) 🔜
+- Dilithium (2, 3, 5)
+- Kyber (512, 768, 1024) (planned)
+- FALCON (512, 1024) (planned)
 
 ## Test Coverage
 
@@ -225,5 +223,5 @@ Contributions are welcome! This is an active development project focused on solv
 
 ---
 
-**Built to solve the quantum threat, one algorithm at a time.** 🔐
+**Built to solve the quantum threat, one algorithm at a time.**
 

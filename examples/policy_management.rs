@@ -11,25 +11,25 @@ use cryptoshift::{
 };
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("📋 CryptoShift - Policy-Driven Cryptography Example\n");
+    println!("CryptoShift - Policy-Driven Cryptography Example\n");
 
     // 1. Classical-only policy (current state for many systems)
-    println!("1️⃣  Classical-Only Policy:");
+    println!("[1] Classical-Only Policy:");
     let classical_policy = PolicyBuilder::classical_only();
     demonstrate_policy(&classical_policy, "Classical")?;
 
     // 2. Post-quantum only policy (future state)
-    println!("\n2️⃣  Post-Quantum Only Policy:");
+    println!("\n[2] Post-Quantum Only Policy:");
     let pqc_policy = PolicyBuilder::post_quantum_only();
     demonstrate_policy(&pqc_policy, "PostQuantum")?;
 
     // 3. Hybrid policy with migration stage
-    println!("\n3️⃣  Hybrid Policy with Gradual Rollout:");
+    println!("\n[3] Hybrid Policy with Gradual Rollout:");
     let hybrid_policy = PolicyBuilder::hybrid_migration(0.1); // 10% PQC
     demonstrate_policy(&hybrid_policy, "Hybrid")?;
 
     // 4. High-security policy (256-bit minimum)
-    println!("\n4️⃣  High-Security Policy (256-bit minimum):");
+    println!("\n[4] High-Security Policy (256-bit minimum):");
     let high_sec_policy = PolicyBuilder::high_security();
     println!("   Policy: {}", high_sec_policy.name());
     println!("   Mode: {:?}", high_sec_policy.mode());
@@ -50,7 +50,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     // 5. Custom policy with specific algorithms
-    println!("\n5️⃣  Custom Policy with Allowed Algorithms:");
+    println!("\n[5] Custom Policy with Allowed Algorithms:");
     let custom_policy = CryptoPolicy::new("financial-institution")
         .set_mode(CryptoMode::Hybrid)
         .set_min_security_level(192)
@@ -78,10 +78,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     // 6. Migration stages
-    println!("\n6️⃣  Migration Stage Examples:");
+    println!("\n[6] Migration Stage Examples:");
     test_migration_stages()?;
 
-    println!("\n✅ Policy example completed!\n");
+    println!("\nPolicy example completed!\n");
     println!("Key Benefits:");
     println!("   - Centralized security policy management");
     println!("   - Automatic validation and enforcement");

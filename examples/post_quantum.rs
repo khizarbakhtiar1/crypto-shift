@@ -11,7 +11,7 @@ use cryptoshift::{
 };
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("🔮 CryptoShift - Post-Quantum Cryptography Example\n");
+    println!("CryptoShift - Post-Quantum Cryptography Example\n");
 
     // Create post-quantum policies for different security tiers
     let pqc_policy_base = CryptoPolicy::new("quantum-resistant-app")
@@ -22,10 +22,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .set_mode(CryptoMode::PostQuantum)
         .set_min_security_level(192);
 
-    println!("📊 Comparing Classical vs Post-Quantum Signatures:\n");
+    println!("Comparing Classical vs Post-Quantum Signatures:\n");
 
     // Test Ed25519 (Classical)
-    println!("1️⃣  Classical: Ed25519");
+    println!("[1] Classical: Ed25519");
     let classical_policy = CryptoPolicy::new("classical")
         .set_mode(CryptoMode::Classical)
         .set_min_security_level(128);
@@ -36,7 +36,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     )?;
 
     // Test Dilithium2 (128-bit security → base policy)
-    println!("\n2️⃣  Post-Quantum: Dilithium2 (NIST Level 2)");
+    println!("\n[2] Post-Quantum: Dilithium2 (NIST Level 2)");
     test_algorithm(
         pqc_policy_base,
         AlgorithmType::PostQuantum(PostQuantumAlgorithm::Dilithium2),
@@ -44,7 +44,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     )?;
 
     // Test Dilithium3 (192-bit security → high policy)
-    println!("\n3️⃣  Post-Quantum: Dilithium3 (NIST Level 3)");
+    println!("\n[3] Post-Quantum: Dilithium3 (NIST Level 3)");
     test_algorithm(
         pqc_policy_high.clone(),
         AlgorithmType::PostQuantum(PostQuantumAlgorithm::Dilithium3),
@@ -52,14 +52,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     )?;
 
     // Test Dilithium5 (256-bit security → high policy)
-    println!("\n4️⃣  Post-Quantum: Dilithium5 (NIST Level 5)");
+    println!("\n[4] Post-Quantum: Dilithium5 (NIST Level 5)");
     test_algorithm(
         pqc_policy_high,
         AlgorithmType::PostQuantum(PostQuantumAlgorithm::Dilithium5),
         "Dilithium5",
     )?;
 
-    println!("\n✅ Post-quantum cryptography example completed!");
+    println!("\nPost-quantum cryptography example completed!");
     println!("\nKey Takeaways:");
     println!("   - Post-quantum signatures are larger than classical ones");
     println!("   - Higher security levels = larger keys and signatures");

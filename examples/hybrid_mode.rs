@@ -21,7 +21,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .set_min_security_level(128);
 
     // 1. Generate hybrid key pair with defaults (Ed25519 + Dilithium3)
-    println!("1️⃣  Generating hybrid key pair (Ed25519 + Dilithium3)...");
+    println!("[1] Generating hybrid key pair (Ed25519 + Dilithium3)...");
     let generator = HybridKeyPairGenerator::with_defaults(policy.clone());
     let keypair = generator.generate()?;
     println!("   Hybrid key pair generated:");
@@ -35,7 +35,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
 
     // 2. Sign a message with both algorithms
-    println!("\n2️⃣  Signing message with hybrid signature...");
+    println!("\n[2] Signing message with hybrid signature...");
     let message = b"Important document that needs both classical and PQC protection";
     let signer = HybridSigner::new(policy.clone());
     let signature = signer.sign(&keypair, message)?;
@@ -51,7 +51,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("     Total size: {} bytes", signature.total_size());
 
     // 3. Test different verification strategies
-    println!("\n3️⃣  Testing verification strategies:\n");
+    println!("\n[3] Testing verification strategies:\n");
 
     // Strategy 1: Require both (most secure)
     println!("   Strategy: RequireBoth (most secure)");
@@ -78,7 +78,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("   Post-quantum signature verified\n");
 
     // 4. Test serialization
-    println!("4️⃣  Testing signature serialization...");
+    println!("[4] Testing signature serialization...");
     let serialized = signature.to_bytes()?;
     println!("   Serialized to {} bytes", serialized.len());
     
@@ -88,7 +88,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("   Deserialized and verified successfully\n");
 
     // 5. Custom algorithm combination
-    println!("5️⃣  Custom high-security combination (ECDSA-P384 + Dilithium5)...");
+    println!("[5] Custom high-security combination (ECDSA-P384 + Dilithium5)...");
     let high_sec_policy = CryptoPolicy::new("high-security")
         .set_mode(CryptoMode::Hybrid)
         .set_min_security_level(192);
@@ -107,7 +107,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("     Security: 192-bit classical, 256-bit post-quantum");
     println!("     Total size: {} bytes\n", high_sec_sig.total_size());
 
-    println!("✅ Hybrid cryptography example completed!\n");
+    println!("Hybrid cryptography example completed!\n");
     println!("Use Cases:");
     println!("   - Gradual migration from classical to post-quantum");
     println!("   - Defense in depth (if one algorithm breaks, other protects)");
