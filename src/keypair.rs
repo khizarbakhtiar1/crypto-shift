@@ -106,6 +106,7 @@ impl Drop for KeyPair {
 }
 
 /// Key pair generator
+#[derive(Default)]
 pub struct KeyPairGenerator {
     policy: CryptoPolicy,
 }
@@ -339,13 +340,7 @@ impl KeyPairGenerator {
     }
 }
 
-impl Default for KeyPairGenerator {
-    fn default() -> Self {
-        Self {
-            policy: CryptoPolicy::default(),
-        }
-    }
-}
+
 
 #[cfg(test)]
 mod tests {

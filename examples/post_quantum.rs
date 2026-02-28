@@ -13,8 +13,12 @@ use cryptoshift::{
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("🔮 CryptoShift - Post-Quantum Cryptography Example\n");
 
-    // Create a post-quantum policy
-    let pqc_policy = CryptoPolicy::new("quantum-resistant-app")
+    // Create post-quantum policies for different security tiers
+    let pqc_policy_base = CryptoPolicy::new("quantum-resistant-app")
+        .set_mode(CryptoMode::PostQuantum)
+        .set_min_security_level(128);
+
+    let pqc_policy_high = CryptoPolicy::new("quantum-resistant-app-high")
         .set_mode(CryptoMode::PostQuantum)
         .set_min_security_level(192);
 
@@ -31,26 +35,26 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         "Ed25519",
     )?;
 
-    // Test Dilithium2
+    // Test Dilithium2 (128-bit security → base policy)
     println!("\n2️⃣  Post-Quantum: Dilithium2 (NIST Level 2)");
     test_algorithm(
-        pqc_policy.clone(),
+        pqc_policy_base,
         AlgorithmType::PostQuantum(PostQuantumAlgorithm::Dilithium2),
         "Dilithium2",
     )?;
 
-    // Test Dilithium3
+    // Test Dilithium3 (192-bit security → high policy)
     println!("\n3️⃣  Post-Quantum: Dilithium3 (NIST Level 3)");
     test_algorithm(
-        pqc_policy.clone(),
+        pqc_policy_high.clone(),
         AlgorithmType::PostQuantum(PostQuantumAlgorithm::Dilithium3),
         "Dilithium3",
     )?;
 
-    // Test Dilithium5
+    // Test Dilithium5 (256-bit security → high policy)
     println!("\n4️⃣  Post-Quantum: Dilithium5 (NIST Level 5)");
     test_algorithm(
-        pqc_policy,
+        pqc_policy_high,
         AlgorithmType::PostQuantum(PostQuantumAlgorithm::Dilithium5),
         "Dilithium5",
     )?;

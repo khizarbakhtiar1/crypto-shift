@@ -51,6 +51,7 @@ impl Signature {
 }
 
 /// Signer for creating digital signatures
+#[derive(Default)]
 pub struct Signer {
     policy: CryptoPolicy,
 }
@@ -237,15 +238,8 @@ impl Signer {
     }
 }
 
-impl Default for Signer {
-    fn default() -> Self {
-        Self {
-            policy: CryptoPolicy::default(),
-        }
-    }
-}
-
 /// Verifier for validating digital signatures
+#[derive(Default)]
 pub struct Verifier {
     policy: CryptoPolicy,
 }
@@ -500,14 +494,6 @@ impl Verifier {
             .map_err(|e| Error::InvalidSignature(format!("Dilithium5 verification failed: {:?}", e)))?;
 
         Ok(())
-    }
-}
-
-impl Default for Verifier {
-    fn default() -> Self {
-        Self {
-            policy: CryptoPolicy::default(),
-        }
     }
 }
 

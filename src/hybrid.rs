@@ -246,7 +246,7 @@ impl HybridVerifier {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::policy::{CryptoMode, PolicyBuilder};
+    use crate::policy::CryptoMode;
 
     #[test]
     fn test_hybrid_keypair_generation() {
