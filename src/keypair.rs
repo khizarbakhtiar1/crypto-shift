@@ -179,19 +179,20 @@ impl KeyPairGenerator {
             }
             ClassicalAlgorithm::X25519 => {
                 use rand::rngs::OsRng;
-                use x25519_dalek::{PublicKey, EphemeralSecret};
+                use rand::RngCore;
+                use x25519_dalek::{PublicKey, StaticSecret};
 
-                let secret = EphemeralSecret::random_from_rng(OsRng);
+                // Generate a static secret so the key material can be persisted
+                // and later reused for Diffie-Hellman key agreement.
+                let mut secret_bytes = [0u8; 32];
+                OsRng.fill_bytes(&mut secret_bytes);
+                let secret = StaticSecret::from(secret_bytes);
                 let public = PublicKey::from(&secret);
-
-                // X25519 doesn't expose secret bytes directly in the same way
-                // We'll use a placeholder for now
-                let secret_bytes = vec![0u8; 32]; // Placeholder
 
                 Ok(KeyPair::new(
                     algorithm,
                     public.to_bytes().to_vec(),
-                    secret_bytes,
+                    secret.to_bytes().to_vec(),
                 ))
             }
             ClassicalAlgorithm::RSA2048 => self.generate_rsa(2048, algorithm),
@@ -290,11 +291,50 @@ impl KeyPairGenerator {
             PostQuantumAlgorithm::Dilithium2 => self.generate_dilithium2(algorithm),
             PostQuantumAlgorithm::Dilithium3 => self.generate_dilithium3(algorithm),
             PostQuantumAlgorithm::Dilithium5 => self.generate_dilithium5(algorithm),
+            PostQuantumAlgorithm::Kyber512 => self.generate_kyber512(algorithm),
+            PostQuantumAlgorithm::Kyber768 => self.generate_kyber768(algorithm),
+            PostQuantumAlgorithm::Kyber1024 => self.generate_kyber1024(algorithm),
             _ => Err(Error::UnsupportedAlgorithm(format!(
                 "Post-quantum algorithm {} not yet fully implemented",
                 algorithm
             ))),
         }
+    }
+
+    fn generate_kyber512(&self, algorithm: AlgorithmType) -> Result<KeyPair> {
+        use pqcrypto_kyber::kyber512;
+        use pqcrypto_traits::kem::{PublicKey as _, SecretKey as _};
+
+        let (public_key, secret_key) = kyber512::keypair();
+        Ok(KeyPair::new(
+            algorithm,
+            public_key.as_bytes().to_vec(),
+            secret_key.as_bytes().to_vec(),
+        ))
+    }
+
+    fn generate_kyber768(&self, algorithm: AlgorithmType) -> Result<KeyPair> {
+        use pqcrypto_kyber::kyber768;
+        use pqcrypto_traits::kem::{PublicKey as _, SecretKey as _};
+
+        let (public_key, secret_key) = kyber768::keypair();
+        Ok(KeyPair::new(
+            algorithm,
+            public_key.as_bytes().to_vec(),
+            secret_key.as_bytes().to_vec(),
+        ))
+    }
+
+    fn generate_kyber1024(&self, algorithm: AlgorithmType) -> Result<KeyPair> {
+        use pqcrypto_kyber::kyber1024;
+        use pqcrypto_traits::kem::{PublicKey as _, SecretKey as _};
+
+        let (public_key, secret_key) = kyber1024::keypair();
+        Ok(KeyPair::new(
+            algorithm,
+            public_key.as_bytes().to_vec(),
+            secret_key.as_bytes().to_vec(),
+        ))
     }
 
     fn generate_dilithium2(&self, algorithm: AlgorithmType) -> Result<KeyPair> {

@@ -267,3 +267,72 @@ fn test_concurrent_operations() {
     }
 }
 
+#[test]
+fn test_encryption_kyber768_roundtrip() {
+    let policy = CryptoPolicy::new("enc-test")
+        .set_mode(CryptoMode::Hybrid)
+        .set_min_security_level(128);
+
+    let algo = AlgorithmType::PostQuantum(PostQuantumAlgorithm::Kyber768);
+    let generator = KeyPairGenerator::new(policy.clone());
+    let keypair = generator.generate(algo).unwrap();
+
+    let plaintext = b"Integration test payload for Kyber KEM-DEM";
+    let encryptor = Encryptor::new(policy.clone());
+    let message = encryptor.encrypt(algo, keypair.public_key(), plaintext).unwrap();
+
+    let decryptor = Decryptor::new(policy);
+    let recovered = decryptor.decrypt(&keypair, &message).unwrap();
+    assert_eq!(recovered, plaintext);
+}
+
+#[test]
+fn test_encryption_x25519_roundtrip() {
+    let policy = CryptoPolicy::new("enc-test")
+        .set_mode(CryptoMode::Hybrid)
+        .set_min_security_level(128);
+
+    let algo = AlgorithmType::Classical(ClassicalAlgorithm::X25519);
+    let generator = KeyPairGenerator::new(policy.clone());
+    let keypair = generator.generate(algo).unwrap();
+
+    let plaintext = b"Classical KEM-DEM roundtrip";
+    let encryptor = Encryptor::new(policy.clone());
+    let message = encryptor.encrypt(algo, keypair.public_key(), plaintext).unwrap();
+
+    let decryptor = Decryptor::new(policy);
+    let recovered = decryptor.decrypt(&keypair, &message).unwrap();
+    assert_eq!(recovered, plaintext);
+}
+
+#[test]
+fn test_migration_orchestrator_end_to_end() {
+    let mut orchestrator = MigrationOrchestrator::with_default_plan("integration");
+    assert!(!orchestrator.is_complete());
+
+    let mut total_ops = 0u64;
+    while orchestrator.advance().is_ok() {
+        for _ in 0..500 {
+            orchestrator.select_algorithm();
+        }
+        total_ops += orchestrator.stats().total();
+    }
+    assert!(orchestrator.is_complete());
+    assert!(total_ops > 0);
+}
+
+#[test]
+fn test_crypto_inventory_scan() {
+    let inventory = CryptoInventory::new();
+    let report = inventory.scan_all([
+        ("auth.rs", "RsaPrivateKey::new and ecdsa::SigningKey"),
+        ("hash.go", "md5.New()"),
+        ("pqc.rs", "pqcrypto_kyber::kyber768"),
+    ]);
+
+    assert!(report.count(RiskLevel::QuantumVulnerable) >= 2);
+    assert!(report.count(RiskLevel::ClassicallyBroken) >= 1);
+    assert!(report.count(RiskLevel::QuantumSafe) >= 1);
+    assert!(report.risk_score() > 0);
+}
+

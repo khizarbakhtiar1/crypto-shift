@@ -26,22 +26,28 @@
 #![warn(clippy::all)]
 
 pub mod algorithms;
+pub mod encryption;
 pub mod error;
+pub mod hybrid;
+pub mod inventory;
 pub mod keypair;
+pub mod migration;
 pub mod policy;
 pub mod signature;
-pub mod hybrid;
 
 // Re-export commonly used types
-pub use algorithms::{AlgorithmType, ClassicalAlgorithm, PostQuantumAlgorithm};
+pub use algorithms::{AlgorithmCategory, AlgorithmType, ClassicalAlgorithm, PostQuantumAlgorithm};
+pub use encryption::{Decryptor, EncryptedMessage, Encryptor};
 pub use error::{Error, Result};
-pub use keypair::{KeyPair, KeyPairGenerator};
-pub use policy::{CryptoPolicy, CryptoMode, MigrationStage, PolicyBuilder};
-pub use signature::{Signature, Signer, Verifier};
 pub use hybrid::{
     HybridKeyPair, HybridKeyPairGenerator, HybridSignature, HybridSigner, HybridVerifier,
     VerificationStrategy,
 };
+pub use inventory::{CryptoInventory, Finding, InventoryReport, RiskLevel};
+pub use keypair::{KeyPair, KeyPairGenerator};
+pub use migration::{MigrationOrchestrator, MigrationPlan, MigrationStats};
+pub use policy::{CryptoMode, CryptoPolicy, MigrationStage, PolicyBuilder};
+pub use signature::{Signature, Signer, Verifier};
 
 /// Library version
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");

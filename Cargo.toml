@@ -1,6 +1,6 @@
 [package]
 name = "cryptoshift"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 authors = ["CryptoShift Team"]
 description = "A crypto-agility SDK for migrating from classical to post-quantum cryptography"
@@ -13,16 +13,21 @@ categories = ["cryptography", "development-tools"]
 # Core crypto primitives
 ring = "0.17"
 ed25519-dalek = "2.1"
-x25519-dalek = "2.0"
+x25519-dalek = { version = "2.0", features = ["static_secrets"] }
 rsa = "0.9"
 pkcs8 = { version = "0.10", features = ["std", "pem"] }
 p256 = { version = "0.13", features = ["ecdsa", "pem"] }
 p384 = { version = "0.13", features = ["ecdsa", "pem"] }
 ecdsa = "0.16"
 
-# Post-quantum cryptography (we'll add these when implementing PQC)
+# Post-quantum cryptography
 pqcrypto-dilithium = "0.5"
+pqcrypto-kyber = "0.8"
 pqcrypto-traits = "0.3"
+
+# Authenticated symmetric encryption (DEM half of KEM-DEM hybrid encryption)
+aes-gcm = "0.10"
+hkdf = "0.12"
 
 # Serialization
 serde = { version = "1.0", features = ["derive"] }
@@ -72,3 +77,7 @@ codegen-units = 1
 name = "cryptoshift"
 path = "src/bin/cryptoshift.rs"
 required-features = ["cli"]
+
+[[bench]]
+name = "crypto_benchmarks"
+harness = false
