@@ -35,6 +35,9 @@ pub mod migration;
 pub mod policy;
 pub mod signature;
 
+#[cfg(feature = "ffi")]
+pub mod ffi;
+
 // Re-export commonly used types
 pub use algorithms::{AlgorithmCategory, AlgorithmType, ClassicalAlgorithm, PostQuantumAlgorithm};
 pub use encryption::{Decryptor, EncryptedMessage, Encryptor};

@@ -26,6 +26,10 @@ target/doc/
 .env
 .env.local
 
-# Project documentation (for understanding only)
-CHANGELOG.md
-PROJECT_SUMMARY.md
+# Bindings build artifacts
+bindings/node/node_modules/
+bindings/node/*.node
+bindings/node/index.js
+bindings/node/index.d.ts
+bindings/python/dist/
+bindings/python/*.egg-info/

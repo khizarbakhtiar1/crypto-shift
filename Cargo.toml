@@ -1,6 +1,6 @@
 [package]
 name = "cryptoshift"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 authors = ["CryptoShift Team"]
 description = "A crypto-agility SDK for migrating from classical to post-quantum cryptography"
@@ -8,6 +8,9 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/cryptoshift/cryptoshift"
 keywords = ["cryptography", "post-quantum", "pqc", "migration", "security"]
 categories = ["cryptography", "development-tools"]
+
+[lib]
+crate-type = ["rlib", "cdylib"]
 
 [dependencies]
 # Core crypto primitives
@@ -62,11 +65,19 @@ hex = { version = "0.4", optional = true }
 criterion = "0.5"
 proptest = "1.4"
 
+[build-dependencies]
+cbindgen = "0.26"
+
+[workspace]
+members = ["bindings/python", "bindings/node"]
+resolver = "2"
+
 [features]
 default = ["std"]
 std = []
 async = ["tokio"]
 cli = ["clap", "hex"]
+ffi = []
 
 [profile.release]
 opt-level = 3

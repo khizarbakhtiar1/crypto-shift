@@ -1,0 +1,22 @@
+{
+  "name": "cryptoshift",
+  "version": "0.3.0",
+  "description": "Crypto-agility SDK for post-quantum migration",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "license": "MIT OR Apache-2.0",
+  "napi": {
+    "name": "cryptoshift",
+    "triples": {
+      "defaults": true,
+      "additional": []
+    }
+  },
+  "scripts": {
+    "build": "napi build --platform --release",
+    "build:debug": "napi build --platform"
+  },
+  "devDependencies": {
+    "@napi-rs/cli": "^2.18.0"
+  }
+}

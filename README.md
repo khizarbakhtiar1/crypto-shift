@@ -19,11 +19,11 @@ Organizations face an urgent challenge: migrate to post-quantum cryptography bef
 - **Migration Orchestrator**: Stage-based rollout plans with deterministic traffic splitting
 - **Crypto Inventory**: Scan source code for quantum-vulnerable primitives
 - **Security-First**: Built in Rust for memory safety and security guarantees
-- **CLI Tool**: Full command-line interface for key generation, signing, encryption, migration, and scanning
+- **Language Bindings**: Python, Node.js, and C FFI for cross-language integration
 
 ## Project Status
 
-**Current Phase**: Production-Ready — **v0.2.0**
+**Current Phase**: Production-Ready — **v0.3.0**
 
 ### Completed Modules
 
@@ -38,12 +38,13 @@ Organizations face an urgent challenge: migrate to post-quantum cryptography bef
 | `migration` | Migration orchestrator with staged rollout |
 | `inventory` | Cryptographic discovery and quantum-risk scoring |
 | `error` | Unified error handling |
+| `ffi` | C-compatible FFI for language bindings |
 
 ### Test Coverage
 
-- **59 unit tests** across all modules
+- **61 unit tests** across all modules (including FFI)
 - **14 integration tests** (end-to-end workflows)
-- **73 total tests passing**
+- **75 total tests passing**
 - Criterion benchmarks for keygen, sign, verify, and encryption
 
 ## Quick Start
@@ -87,6 +88,50 @@ cargo run --example encryption_demo      # Kyber + X25519 encryption
 cargo run --example migration_demo       # Staged migration simulation
 cargo run --example inventory_scan       # Crypto discovery scan
 ```
+
+### Language Bindings
+
+#### Python
+
+```bash
+cd bindings/python
+pip install maturin
+maturin develop --release
+
+python -c "
+import cryptoshift
+pub, priv = cryptoshift.keygen('dilithium3')
+sig = cryptoshift.sign('dilithium3', priv, b'Hello!')
+print(cryptoshift.verify('dilithium3', pub, b'Hello!', sig))
+"
+```
+
+#### Node.js
+
+```bash
+cd bindings/node
+npm install
+npm run build
+
+node -e "
+const cs = require('./index.js');
+const { publicKey, privateKey } = cs.keygen('dilithium3');
+const sig = cs.sign('dilithium3', privateKey, Buffer.from('Hello!'));
+console.log(cs.verify('dilithium3', publicKey, Buffer.from('Hello!'), sig));
+"
+```
+
+#### C FFI
+
+Build the shared library and use the generated header:
+
+```bash
+cargo build --release --features ffi
+# Header: include/cryptoshift.h
+# Library: target/release/libcryptoshift.so
+```
+
+See [SECURITY.md](SECURITY.md) for the security audit summary and vulnerability reporting policy.
 
 ### Code Examples
 
@@ -246,12 +291,13 @@ cargo build --release --features cli
 - [x] Code scanning and discovery
 - [x] Staged rollout simulation
 
-**Phase 4: Production Ready** — In Progress
+**Phase 4: Production Ready** — Complete
 - [x] Performance benchmarks
 - [x] CLI tools
 - [x] Documentation and examples
-- [ ] Security audit
-- [ ] Language bindings (Python, Node.js, C)
+- [x] Security audit (see [SECURITY.md](SECURITY.md))
+- [x] Language bindings (Python, Node.js, C)
+- [ ] Independent third-party audit
 
 ## License
 
